@@ -8,10 +8,10 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  var io = "0";
-  var firstNumber = "0";
-  var oprator = "+";
-  var secondNumber = "0";
+  var io = "";
+  var firstNumber = "";
+  var oprator = "";
+  var secondNumber = "";
   void calculator() {
     if (oprator == "+")
       setState(() {
@@ -42,6 +42,10 @@ class HomePageState extends State<HomePage> {
       setState(() {
         io = pow(double.parse(firstNumber), double.parse(secondNumber))
             .toString();
+      });
+    if (io.length > 10)
+      setState(() {
+        io = io.substring(0, 10);
       });
   }
 
@@ -94,14 +98,31 @@ class HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _button(String key) {
-    // Creating a method of return type Widget with number and function f as a parameter
+  Widget _button(String key, String type) {
+    if (type == "input")
+      return MaterialButton(
+        height: 90.0,
+        child: Text(key,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0)),
+        textColor: Colors.black,
+        color: Colors.grey,
+        onPressed: () => _controller(key),
+      );
+    else if (type == "operator")
+      return MaterialButton(
+        height: 90.0,
+        child: Text(key,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0)),
+        textColor: Colors.black,
+        color: Colors.orange,
+        onPressed: () => _controller(key),
+      );
     return MaterialButton(
       height: 90.0,
       child: Text(key,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0)),
       textColor: Colors.black,
-      color: Colors.grey[100],
+      color: Colors.grey[700],
       onPressed: () => _controller(key),
     );
   }
@@ -112,39 +133,35 @@ class HomePageState extends State<HomePage> {
     return new Scaffold(
         appBar: new AppBar(
           //defines the content of the Appbar
-          title: new Text("Calculator"),
+          title: new Text(
+            "Calculator",
+            style: TextStyle(color: Colors.white, fontSize: 20.0),
+          ),
+          backgroundColor: Colors.black,
         ),
         body: new Container(
             //defines the content of the body
             child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          verticalDirection: VerticalDirection.down, // exp
+          textBaseline: TextBaseline.alphabetic, // exp
+          crossAxisAlignment: CrossAxisAlignment.baseline, // exp
           children: <Widget>[
-            // Container(
-            //   constraints: BoxConstraints.expand(
-            //     height: Theme.of(context).textTheme.headline4.fontSize * 1.1 +
-            //         100.0,
-            //   ),
-            //   alignment: Alignment.bottomCenter,
-            //   color: Colors.black,
-            //   child: Text(
-            //     "$ans",
-            //     style: TextStyle(fontSize: 50.0, color: Colors.white),
-            //     textAlign: TextAlign.center,
-            //   ),
-            // ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  " $firstNumber $oprator $secondNumber ",
+                  " $firstNumber $oprator $secondNumber \t\t",
                   style: TextStyle(color: Colors.white70, fontSize: 30.0),
                   textAlign: TextAlign.right,
                 )
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  " $io ",
+                  " $io \t",
                   style: TextStyle(color: Colors.white, fontSize: 50.0),
                   textAlign: TextAlign.right,
                 )
@@ -153,46 +170,46 @@ class HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                _button("%"), // using custom widget _button
-                _button("^"),
-                _button("C"),
-                _button("AC")
+                _button("%", "operator"), // using custom widget _button
+                _button("^", "operator"),
+                _button("C", "operator"),
+                _button("AC", "output")
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                _button("7"), // using custom widget _button
-                _button("8"),
-                _button("9"),
-                _button("/")
+                _button("7", "input"), // using custom widget _button
+                _button("8", "input"),
+                _button("9", "input"),
+                _button("/", "operator")
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                _button("4"), // using custom widget _button
-                _button("5"),
-                _button("6"),
-                _button("X")
+                _button("4", "input"), // using custom widget _button
+                _button("5", "input"),
+                _button("6", "input"),
+                _button("X", "operator")
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                _button("1"), // using custom widget _button
-                _button("2"),
-                _button("3"),
-                _button("+")
+                _button("1", "input"), // using custom widget _button
+                _button("2", "input"),
+                _button("3", "input"),
+                _button("+", "operator")
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                _button("="), // using custom widget _button
-                _button("0"),
-                _button("."),
-                _button("-"),
+                _button("=", "output"), // using custom widget _button
+                _button("0", "input"),
+                _button(".", "input"),
+                _button("-", "operator"),
               ],
             ),
           ],
